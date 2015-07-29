@@ -11,6 +11,7 @@ healthvalue=194
 acc=[0,0]
 arrows=[]
 keys=[False,False,False,False]
+autoshoot=False
 playerpos=[100,100]
 pygame.init()
 width,height=640,480
@@ -123,10 +124,10 @@ while running:
     #8
     for event in pygame.event.get():
         if event.type==pygame.MOUSEBUTTONDOWN:
-            position=pygame.mouse.get_pos()
-            acc[1]+=1
-            arrows.append([math.atan2(position[1]-(playerpos1[1]+32),position[0]-(playerpos1[0]+26)),playerpos1[0]+32,playerpos1[1]+32])
-            shoot.play()
+            autoshoot=True
+        if event.type==pygame.MOUSEBUTTONUP:
+            autoshoot=False
+        
         if event.type==pygame.QUIT:
             pygame.quit()
             exit(0)
@@ -148,6 +149,13 @@ while running:
                 keys[2]=False
             elif event.key==pygame.K_d:
                 keys[3]=False
+    
+    if autoshoot:   
+        position=pygame.mouse.get_pos()
+        acc[1]+=1
+        arrows.append([math.atan2(position[1]-(playerpos1[1]+32),position[0]-(playerpos1[0]+26)),playerpos1[0]+32,playerpos1[1]+32])
+        shoot.play()
+    
     #9
     if keys[0]:
         playerpos[1]-=5        
