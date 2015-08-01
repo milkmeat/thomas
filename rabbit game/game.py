@@ -4,6 +4,8 @@ from pygame.locals import*
 import math
 import random
 #2
+shootInterval=15
+shootTimer=0
 badtimer=100
 badtimer1=0
 badguys=[[640,100]]
@@ -150,12 +152,13 @@ while running:
             elif event.key==pygame.K_d:
                 keys[3]=False
     
-    if autoshoot:   
+    if autoshoot and shootTimer<=0:   
         position=pygame.mouse.get_pos()
         acc[1]+=1
         arrows.append([math.atan2(position[1]-(playerpos1[1]+32),position[0]-(playerpos1[0]+26)),playerpos1[0]+32,playerpos1[1]+32])
         shoot.play()
-    
+        shootTimer=shootInterval
+    shootTimer-=1
     #9
     if keys[0]:
         playerpos[1]-=5        
