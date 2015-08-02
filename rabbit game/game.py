@@ -3,12 +3,13 @@ import pygame
 from pygame.locals import*
 import math
 import random
+import time
 #2
 shootInterval=15
 shootTimer=0
 badtimer=100
 badtimer1=0
-badguys=[[640,100]]
+badguys=[]
 healthvalue=194
 acc=[0,0]
 arrows=[]
@@ -16,7 +17,7 @@ keys=[False,False,False,False]
 autoshoot=False
 playerpos=[100,100]
 pygame.init()
-width,height=640,480
+width,height=1000,750
 screen=pygame.display.set_mode((width,height))
 pygame.mixer.init()
 #3
@@ -29,7 +30,9 @@ healthbar = pygame.image.load("resources/images/healthbar.png")
 health=pygame.image.load("resources/images/health.png")
 badguyimg=badguyimg1
 gameover = pygame.image.load("resources/images/gameover.png")
+gameoverFull=pygame.transform.scale(gameover,(width,height))
 youwin = pygame.image.load("resources/images/youwin.png")
+youwinFull=pygame.transform.scale(youwin,(width,height))
 #3.1
 hit = pygame.mixer.Sound("resources/audio/explode.wav")
 enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
@@ -44,18 +47,20 @@ pygame.mixer.music.set_volume(0.25)
 running = 1
 exitcode = 0
 while running:
+    time.sleep(0.01)
     badtimer-=1
     #5
-    screen.fill(0)
+    screen.fill([0,255,0])
     
     #6
+    '''
     for x in range(width/grass.get_width()+1):
         for y in range (height/grass.get_height()+1):
             screen.blit(grass,(x*100,y*100))
-    screen.blit(castle,(0,30))
-    screen.blit(castle,(0,135))       
-    screen.blit(castle,(0,240))
-    screen.blit(castle,(0,345))
+    '''
+    for x in range (1,5):
+        screen.blit(castle,(0,height/5*x-50))
+
     #6.1
     position=pygame.mouse.get_pos()
     angle = math.atan2(position[1]-(playerpos[1]+32),position[0]-(playerpos[0]+26))
@@ -75,7 +80,7 @@ while running:
         screen.blit(arrow1, (projectile[1], projectile[2]))
     #6.3
     if badtimer==0:
-        badguys.append([640, random.randint(50,430)])
+        badguys.append([width, random.randint(50,height-50)])
         badtimer=100-(badtimer1*2)
         if badtimer1>=35:
             badtimer1=35
@@ -188,7 +193,7 @@ if exitcode==0:
     textRect = text.get_rect()
     textRect.centerx = screen.get_rect().centerx
     textRect.centery = screen.get_rect().centery+24
-    screen.blit(gameover, (0,0))
+    screen.blit(gameoverFull, (0,0))
     screen.blit(text, textRect)
 else:
     pygame.font.init()
@@ -197,7 +202,7 @@ else:
     textRect = text.get_rect()
     textRect.centerx = screen.get_rect().centerx
     textRect.centery = screen.get_rect().centery+24
-    screen.blit(youwin, (0,0))
+    screen.blit(youwinFull, (0,0))
     screen.blit(text, textRect)
 while 1:
     for event in pygame.event.get():
