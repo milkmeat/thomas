@@ -39,7 +39,7 @@ enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
 shoot = pygame.mixer.Sound("resources/audio/shoot.wav") 
 hit.set_volume(0.05)
 enemy.set_volume(0.05)
-shoot.set_volume(0.05)
+shoot.set_volume(0.05)     
 pygame.mixer.music.load('resources/audio/moonlight.wav')
 pygame.mixer.music.play(-1, 0.0)
 pygame.mixer.music.set_volume(0.25)
@@ -69,8 +69,8 @@ while running:
     screen.blit(playerrot, playerpos1)
     #6.2
     for bullet in arrows:
-        velx=math.cos(bullet[0])*10
-        vely=math.sin(bullet[0])*10
+        velx=math.cos(bullet[0])*5
+        vely=math.sin(bullet[0])*5
         bullet[1]+=velx
         bullet[2]+=vely
         if bullet[1]<-64 or bullet[1]>640 or bullet[2]<-64 or bullet[2]>480:
@@ -91,7 +91,7 @@ while running:
     for badguy in badguys:
         if badguy[0]<-64:
             badguys.pop(index)
-        badguy[0]-=7
+        badguy[0]-=10
         badrect=pygame.Rect(badguyimg.get_rect())
         badrect.top=badguy[1]
         badrect.left=badguy[0]
