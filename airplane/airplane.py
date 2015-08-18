@@ -27,8 +27,10 @@ class HelloWorld(cocos.layer.Layer):
         
         self.move=[False,False,False,False] #up down left right
         
-        self.bullets=[]
-        self.enemies=[]
+        self.bullets=cocos.batch.BatchNode()
+        self.add(self.bullets)
+        self.enemies=cocos.batch.BatchNode()
+        self.add(self.enemies)
         
         self.schedule( self.step )
         self.schedule_interval(self.shoot,0.5)
@@ -38,14 +40,12 @@ class HelloWorld(cocos.layer.Layer):
         w,h = director.get_window_size()
         enemy = cocos.sprite.Sprite('resourses/shoot/enemy1.png')
         enemy.position=(w*random.random(), h)
-        self.add(enemy)
-        self.enemies.append(enemy)        
+        self.enemies.add(enemy)        
     
     def shoot( self, dt ):
         bullet = cocos.sprite.Sprite('resourses/shoot/bullet1.png')
-        bullet.position=self.hero.position
-        self.add(bullet)
-        self.bullets.append(bullet)
+        bullet.position=self.hero.position        
+        self.bullets.add(bullet)
         
     def on_key_press(self, symbol, modifiers):
         if symbol==key.UP:
@@ -94,22 +94,19 @@ class HelloWorld(cocos.layer.Layer):
         self.hero.cshape = cm.CircleShape(eu.Vector2(self.hero.x, self.hero.y), 50)     
         collman.add(self.hero)
         
-        for one in self.bullets:
+        for one in self.bullets.get_children():
             one.cshape=cm.AARectShape(eu.Vector2(one.x, one.y), 5,10 )
             collman.add(one)
-        for oneEnemy in self.enemies:
+        for oneEnemy in self.enemies.get_children():
             oneEnemy.cshape=cm.AARectShape(eu.Vector2(oneEnemy.x, oneEnemy.y), 25,25 )
             collman.add(oneEnemy)
-        for oneEnemy in self.enemies:
-            for oneBullet in self.bullets:
+        for oneEnemy in self.enemies.get_children():
+            for oneBullet in self.bullets.get_children():
                 if collman.they_collide(oneEnemy, oneBullet):
-                    self.remove(oneEnemy)
                     self.enemies.remove(oneEnemy)
-                    self.remove(oneBullet)
                     self.bullets.remove(oneBullet)
-        for oneEnemy in self.enemies:
+        for oneEnemy in self.enemies.get_children():
             if collman.they_collide(oneEnemy,self.hero):
-                self.remove(oneEnemy)
                 self.enemies.remove(oneEnemy)
                 #self.remove(hero)
                 #print "you lose!!!!!!!"
@@ -120,18 +117,16 @@ class HelloWorld(cocos.layer.Layer):
                
     def moveEnemies(self):
         w,h = director.get_window_size()
-        for one in self.enemies:
+        for one in self.enemies.get_children():
             one.do(MoveBy((0,-3),0))
             if one.y<0:
-                self.remove(one)
                 self.enemies.remove(one)
             
     def moveBullets(self):
         w,h = director.get_window_size()
-        for one in self.bullets:
+        for one in self.bullets.get_children():
             one.do(MoveBy((0,3),0))
             if one.y>h:
-                self.remove(one)
                 self.bullets.remove(one)
 
 
