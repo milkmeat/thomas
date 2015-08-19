@@ -20,6 +20,17 @@ class HelloWorld(cocos.layer.Layer):
     def __init__(self):
         super( HelloWorld, self ).__init__()
      
+        scoreLabel=cocos.text.Label('0',
+                        font_name='Times new roman',
+                        font_size=64,
+                        anchor_x='center', anchor_y='center' )
+        w,h = director.get_window_size()
+        scoreLabel.position=w-100,h-100
+        self.scoreLabel=scoreLabel
+        self.add(scoreLabel)
+        self.score=0
+        
+     
         sprite = cocos.sprite.Sprite('resourses/shoot/hero2.png')
         self.hero=sprite
         sprite.position = 320,240
@@ -28,7 +39,7 @@ class HelloWorld(cocos.layer.Layer):
         self.move=[False,False,False,False] #up down left right
         
         self.bullets=cocos.batch.BatchNode()
-        self.add(self.bullets)
+        self.add(self.bullets)                           
         self.enemies=cocos.batch.BatchNode()
         self.add(self.enemies)
         
@@ -38,7 +49,9 @@ class HelloWorld(cocos.layer.Layer):
     
     def makeEnemy( self, dt ):
         w,h = director.get_window_size()
-        enemy = cocos.sprite.Sprite('resourses/shoot/enemy1.png')
+        type = random.randint(1, 3)
+        enemy = cocos.sprite.Sprite('resourses/shoot/enemy'+str(type)+'.png')
+        enemy.type=type
         enemy.position=(w*random.random(), h)
         self.enemies.add(enemy)        
     
@@ -85,6 +98,8 @@ class HelloWorld(cocos.layer.Layer):
         self.moveEnemies()
         self.bump()
         
+        self.scoreLabel.element.document.text=str(self.score)
+        
     def bump(self):
         w,h = director.get_window_size()
         collman = cm.CollisionManagerGrid(0.0, w,
@@ -98,13 +113,15 @@ class HelloWorld(cocos.layer.Layer):
             one.cshape=cm.AARectShape(eu.Vector2(one.x, one.y), 5,10 )
             collman.add(one)
         for oneEnemy in self.enemies.get_children():
-            oneEnemy.cshape=cm.AARectShape(eu.Vector2(oneEnemy.x, oneEnemy.y), 25,25 )
+            oneEnemy.cshape=cm.AARectShape(eu.Vector2(oneEnemy.x, oneEnemy.y), 25*oneEnemy.type,25*oneEnemy.type )
             collman.add(oneEnemy)
         for oneEnemy in self.enemies.get_children():
             for oneBullet in self.bullets.get_children():
                 if collman.they_collide(oneEnemy, oneBullet):
                     self.enemies.remove(oneEnemy)
                     self.bullets.remove(oneBullet)
+                    self.score+=50
+                    break
         for oneEnemy in self.enemies.get_children():
             if collman.they_collide(oneEnemy,self.hero):
                 self.enemies.remove(oneEnemy)
@@ -131,7 +148,7 @@ class HelloWorld(cocos.layer.Layer):
 
 
         
-director.init()
+director.init(width=768, height=1024)
 hello_layer=HelloWorld ()
 #hello_layer.do(RotateBy(360, duration=20))
 main_scene=cocos.scene.Scene (hello_layer)
