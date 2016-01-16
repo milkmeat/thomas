@@ -19,12 +19,15 @@ def score(row,col):
         return 0
     if col-row==1:
         return 0
-    if row==0 and col==0:
-        return ds[0][0]    
-    return max(score(row-1,col-1),score(row-1,col))+ds[row][col]    
-zds=0
-for x in range(0,15):
-    if zds<score(14,x):
-        zds=score(14,x)
+    if col==0 and row==0:
+        return 75
+    return max(score(row-1,col-1),score(row-1,col))+ds[row][col]
     
-print zds
+zs=0
+for x in range (0,15):
+    score(14,x)
+    if score(14,x)>zs:
+        zs=score(14,x)
+print zs
+        
+    
