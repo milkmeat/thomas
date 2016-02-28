@@ -1,15 +1,13 @@
 def d(n):
-    zys=0
-    for a in range(1,n):
-        if n%a==0:
-            zys+=a
-            
-    return zys
-zzs=0
+    f=0
+    for x in range(1,n):
+        if n%x==0:
+            f=f+x
+    return f
+c=0
 for a in range(1,10000):
     b=d(a)
     if a!=b and d(b)==a:
-        zzs=zzs+(a+b)/2
-print zzs
-         
-            
+        c=c+a+b
+print c/2 
+    
