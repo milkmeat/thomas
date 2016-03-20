@@ -1,22 +1,23 @@
-def d(n):
+def isprime(n):
     if n<=0:
-        return False
-    for x in range(2,n):        
+        return False    
+    for x in range(2,n):
         if n%x==0:
             return False
     return True
-def maxn(a,b):
-    n=-0
+def maxn(a,b): 
+    n=0
     while True:
+        g=n*n + a*n + b
         n+=1
-        if not d(n*n + a*n + b):
+        if not isprime(g):
             break
     return n
 g=0
-for a in range(-999,999):
-    for b in range(-999,999):
-        if g<maxn(a,b):
-            h=a
-            f=b
-            g=maxn(a,b)
-print h*f
+for x in range(-999,999):
+    for y in range(-999,999):
+        if g<maxn(x,y):
+            g=maxn(x,y)
+            z=x
+            h=y
+print z*h
