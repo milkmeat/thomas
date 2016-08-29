@@ -10,9 +10,8 @@ import cocos.euclid as eu
 class GameOver(cocos.layer.Layer):
     def __init__(self):
         super( GameOver, self ).__init__()
-        
         background=cocos.sprite.Sprite('resourses/shoot/gameover.png')
-        background.position = 320,240
+        background.position = 384,512
         self.add(background)
 
 class HelloWorld(cocos.layer.Layer):
