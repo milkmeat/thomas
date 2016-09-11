@@ -32,14 +32,15 @@ def countPrime(list):
 
 # print countPrime(replaceStar('56**3'))
 # print countPrime(replaceStar('*3'))
-
-def generate(digitnum):
-    if digitnum==0:
+def generate(g):
+    if g==0:
         yield ''
         return
-    for other in generate(digitnum-1):
-        for first in ['*','0','1','2','3','4','5','6','7','8','9']:
+    for other in generate(g-1):
+        for first in '1234567890*':
             yield first+other
+
+
 
 
 for x in generate(6):
